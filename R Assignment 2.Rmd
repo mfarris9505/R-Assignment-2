@@ -1,0 +1,69 @@
+---
+title: "R Assignment 2"
+output: html_document
+---
+
+The choose function presented here is pretty simplistic in nature. I was reading the math behind the binomial 
+
+The Code I used is as follows:
+
+```
+# Choose function created with the prod(vec) function
+choose_2 <- function(n,r){
+  
+# Statement to eliminate an negative values
+  if (n <= 0 | r <= 0) stop("Error not a None Zero Positive Integer")
+
+# Test for none integers.  
+  if (identical(n%%1==0,FALSE) | identical(r%%1==0,FALSE)){
+    stop("Error value not an integer")
+  
+# Test for n-r < 0 
+  }else if (n-r <= 0){
+    stop("Error n-r is less than 0")
+  
+  }else {
+    k <- n - r
+    ans <- prod(1:n) / (prod(1:k) * prod(1:r))
+    if (is.nan(ans))
+      {stop( "Value approaches infinite")}
+    return(ans)
+}
+}
+
+```
+
+That is the base code, which works quite well for most integer values. I added several if statement to make the code error if the values entered are anything other than postive integers.
+
+I was reading about non-integer values on Wikipedia, and suffice it to say, I didn't understand the math in dealing with none integer factorials. For our purposes, I thought trying to determine these values may be unnecessary, as I think we will stick in the realm of integer values.  
+
+The test codes are as followed, I added the choose(n,r) function as verification 
+
+```
+> choose_2(5,3)
+[1] 10
+> choose(5,3)
+[1] 10
+> 
+> choose_2(50,45)
+[1] 2118760
+> choose(50,45)
+[1] 2118760
+> 
+> choose_2(5,-3)
+Error in choose_2(5, -3) : Error not a None Zero Positive Integer
+> 
+> choose_2(5,8)
+Error in choose_2(5, 8) : Error n-r is less than 0
+```
+
+While testing, I found one additional error that was unexpected. My code apparently does not handle high values as well as the package code, I added a statement if that error happens. I called it "approaches infinite".
+
+```
+> choose(400,300)
+[1] 2.241855e+96
+> choose_2(400,300)
+Error in choose_2(400, 300) : Value approaches infinite
+> 
+```
+
